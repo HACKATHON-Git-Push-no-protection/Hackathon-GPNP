@@ -1,0 +1,103 @@
+name: CI for SEP4 Project
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        ports: ["27017:27017"]
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      ######################################
+      # BACKEND: Python (FastAPI) + Tests
+      ######################################
+      # - name: Set up Python
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.10'
+
+      # - name: Install backend dependencies
+      #   run: |
+      #     cd backend
+      #     pip install -r requirements.txt
+
+      # - name: Run backend tests
+      #   run: |
+      #     cd backend
+      #     pytest  # Or your test framework (e.g., unittest)
+
+      ######################################
+      # FRONTEND: React + Jest/Vite Tests
+      ######################################
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '22'
+
+      # - name: Install frontend dependencies
+      #   run: |
+      #     cd frontend
+      #     npm ci
+
+      # - name: Run frontend tests
+      #   run: |
+      #     cd frontend
+      #     npm test -- --ci --watchAll=false  # Modify this depending on your test setup
+
+      ######################################
+      # IOT: C Code Build + (Basic Test)
+      ######################################
+      - name: Install tools for C build
+        run: sudo apt-get update && sudo apt-get install -y gcc libmosquitto-dev
+
+      - name: Build IoT C code
+        run: |
+          cd iot
+          gcc -o iot main.c -lmosquitto
+
+      - name: Run IoT binary (basic check)
+        run: |
+          cd iot
+          ./iot || echo "IoT binary ran (or failed gracefully). Add real tests here."
+
+      ######################################
+      # Build & Push Docker Images
+      ######################################
+      # - name: Docker Compose build
+      #   run: docker-compose -f docker-compose.yml build
+
+      # - name: Docker login
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.MY_DOCKER_USERNAME }}
+      #     password: ${{ secrets.MY_DOCKER_TOKEN }}
+
+      # - name: Push backend image
+      #   run: |
+      #     docker tag sep4-backend ${{ secrets.MY_DOCKER_USERNAME }}/sep4-backend:${{ github.sha }}
+      #     docker push ${{ secrets.MY_DOCKER_USERNAME }}/sep4-backend:${{ github.sha }}
+
+      # - name: Push frontend image
+      #   run: |
+      #     docker tag sep4-frontend ${{ secrets.MY_DOCKER_USERNAME }}/sep4-frontend:${{ github.sha }}
+      #     docker push ${{ secrets.MY_DOCKER_USERNAME }}/sep4-frontend:${{ github.sha }}

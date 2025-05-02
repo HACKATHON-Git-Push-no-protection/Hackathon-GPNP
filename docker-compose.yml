@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    container_name: gpnp-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_URL: "postgresql://admin:password@postgres:5432/sep4db"
+
+  frontend:
+    build: ./frontend
+    container_name: gpnp-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:latest
+    container_name: gpnp-postgres
+    restart: always
+    ports:
+      - "5433:5433"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  mosquitto_data:
+  mosquitto_log:
