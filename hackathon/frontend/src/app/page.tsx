@@ -8,8 +8,17 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { UseFormSetValue } from "react-hook-form";
 
-// Helper function for rendering radio groups
+interface RadioGroupFieldProps {
+  name: keyof FormValues;
+  label: string;
+  options: [string, string][];
+  setValue: UseFormSetValue<FormValues>;
+  errors: Partial<Record<keyof FormValues, { message?: string }>>;
+  idPrefix?: string;
+}
+
 const RadioGroupField = ({
   name,
   label,
@@ -17,13 +26,13 @@ const RadioGroupField = ({
   setValue,
   errors,
   idPrefix = "",
-}) => {
+}: RadioGroupFieldProps) => {
   const prefix = idPrefix ? `${idPrefix}-` : "";
 
   return (
     <div>
       <Label className="block mb-2 text-base font-medium">{label}</Label>
-      <RadioGroup onValueChange={(val) => setValue(name, val)}>
+      <RadioGroup onValueChange={(val) => setValue(name, val as any)}>
         {options.map(([val, label]) => (
           <div key={val} className="flex items-center space-x-2">
             <RadioGroupItem value={val} id={`${prefix}${val}`} />
