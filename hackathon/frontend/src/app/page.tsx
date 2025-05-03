@@ -8,8 +8,17 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { UseFormSetValue } from "react-hook-form";
 
-// Helper function for rendering radio groups
+interface RadioGroupFieldProps {
+  name: keyof FormValues;
+  label: string;
+  options: [string, string][];
+  setValue: UseFormSetValue<FormValues>;
+  errors: Partial<Record<keyof FormValues, { message?: string }>>;
+  idPrefix?: string;
+}
+
 const RadioGroupField = ({
   name,
   label,
@@ -17,13 +26,13 @@ const RadioGroupField = ({
   setValue,
   errors,
   idPrefix = "",
-}) => {
+}: RadioGroupFieldProps) => {
   const prefix = idPrefix ? `${idPrefix}-` : "";
 
   return (
     <div>
       <Label className="block mb-2 text-base font-medium">{label}</Label>
-      <RadioGroup onValueChange={(val) => setValue(name, val)}>
+      <RadioGroup onValueChange={(val) => setValue(name, val as any)}>
         {options.map(([val, label]) => (
           <div key={val} className="flex items-center space-x-2">
             <RadioGroupItem value={val} id={`${prefix}${val}`} />
@@ -119,14 +128,14 @@ export default function Home() {
           Height (cm)
         </Label>
         <Input
-          id="height"
+          id="height_cm"
           type="number"
           min="0"
           step="1"
-          {...register("height", { valueAsNumber: true })}
+          {...register("height_cm", { valueAsNumber: true })}
         />
-        {errors.height && (
-          <p className="text-red-500">{errors.height.message}</p>
+        {errors.height_cm && (
+          <p className="text-red-500">{errors.height_cm.message}</p>
         )}
       </div>
 
@@ -136,20 +145,20 @@ export default function Home() {
           Weight (kg)
         </Label>
         <Input
-          id="weight"
+          id="weight_kg"
           type="number"
           min="0"
           step="0.1"
-          {...register("weight", { valueAsNumber: true })}
+          {...register("weight_kg", { valueAsNumber: true })}
         />
-        {errors.weight && (
-          <p className="text-red-500">{errors.weight.message}</p>
+        {errors.weight_kg && (
+          <p className="text-red-500">{errors.weight_kg.message}</p>
         )}
       </div>
 
       {/* Hydration */}
       <RadioGroupField
-        name="hydration"
+        name="hydration_level"
         label="Hydration"
         options={[
           ["poor", "Poor (rarely drink water)"],
@@ -163,7 +172,7 @@ export default function Home() {
 
       {/* Physical Activity */}
       <RadioGroupField
-        name="activity"
+        name="activity_level"
         label="Activity Level"
         options={[
           ["low", "Low (mostly sedentary)"],
@@ -176,7 +185,7 @@ export default function Home() {
 
       {/* Medication */}
       <RadioGroupField
-        name="medication"
+        name="meds_affecting_gut"
         label="Medications"
         options={[
           ["yes", "Yes"],
@@ -188,7 +197,7 @@ export default function Home() {
 
       {/* Fiber Intake */}
       <RadioGroupField
-        name="fibers"
+        name="fiber_grams"
         label="Dietary Fiber"
         options={[
           ["not much", "Not much"],
@@ -201,7 +210,7 @@ export default function Home() {
 
       {/* Fat Intake */}
       <RadioGroupField
-        name="fatIntake"
+        name="fat_grams"
         label="Fat Intake"
         options={[
           ["not much", "Not much"],
@@ -215,7 +224,7 @@ export default function Home() {
 
       {/* Spice Level */}
       <RadioGroupField
-        name="spiceLevel"
+        name="spiciness"
         label="Spice Level"
         options={[
           ["not spicy", "Not spicy"],
@@ -229,7 +238,7 @@ export default function Home() {
 
       {/* Greasy Meals Per Week */}
       <RadioGroupField
-        name="greasyMealsPerWeek"
+        name="weekly_greasy_meals"
         label="Greasy/Fried Meals Per Week"
         options={[
           ["0-2", "0-2"],
@@ -243,7 +252,7 @@ export default function Home() {
 
       {/* Dairy Intake */}
       <RadioGroupField
-        name="dairyIntake"
+        name="dairy_freq"
         label="Dairy Consumption"
         options={[
           ["yes", "Yes"],
@@ -257,7 +266,7 @@ export default function Home() {
 
       {/* Processed Food Per Day */}
       <RadioGroupField
-        name="processedFoodPerDay"
+        name="processed_servings"
         label="Processed Food Servings Per Day"
         options={[
           ["0-2", "0-2"],
@@ -271,7 +280,7 @@ export default function Home() {
 
       {/* Fruits & Vegetables Per Day */}
       <RadioGroupField
-        name="fruitsVeggiesPerDay"
+        name="fv_servings"
         label="Fruits & Vegetables Servings Per Day"
         options={[
           ["0-2", "0-2"],
@@ -285,7 +294,7 @@ export default function Home() {
 
       {/* Wiping Method */}
       <RadioGroupField
-        name="wipingMethod"
+        name="toilet_method"
         label="Wiping Method"
         options={[
           ["1-ply paper", "1-ply paper"],
@@ -302,7 +311,7 @@ export default function Home() {
 
       {/* Stool Consistency */}
       <RadioGroupField
-        name="stoolConsistency"
+        name="stool_consistency"
         label="Stool Consistency"
         options={[
           ["hard and lumpy", "Hard and lumpy"],
@@ -318,7 +327,7 @@ export default function Home() {
 
       {/* Stool Color */}
       <RadioGroupField
-        name="stoolColor"
+        name="stool_color"
         label="Stool Color"
         options={[
           ["brown", "Brown"],
@@ -335,7 +344,7 @@ export default function Home() {
 
       {/* Stool Smell Intensity */}
       <RadioGroupField
-        name="stoolSmellIntensity"
+        name="smell_intensity"
         label="Stool Smell Intensity"
         options={[
           ["1", "1"],
@@ -352,26 +361,26 @@ export default function Home() {
       {/* Bowel Movements Per Week */}
       <div>
         <Label
-          htmlFor="bowelMovementsPerWeek"
+          htmlFor="weekly_bms"
           className="block mb-2 text-base font-medium"
         >
           Bowel Movements Per Week
         </Label>
         <Input
-          id="bowelMovementsPerWeek"
+          id="weekly_bms"
           type="number"
           min="0"
           step="1"
-          {...register("bowelMovementsPerWeek", { valueAsNumber: true })}
+          {...register("weekly_bms", { valueAsNumber: true })}
         />
-        {errors.bowelMovementsPerWeek && (
-          <p className="text-red-500">{errors.bowelMovementsPerWeek.message}</p>
+        {errors.weekly_bms && (
+          <p className="text-red-500">{errors.weekly_bms.message}</p>
         )}
       </div>
 
       {/* Caffeine Per Day */}
       <RadioGroupField
-        name="caffeinePerDay"
+        name="caffeinated_beverages_per_day"
         label="Caffeinated Beverages Per Day"
         options={[
           ["0-2", "0-2"],
@@ -386,21 +395,21 @@ export default function Home() {
       {/* Sleep Hours */}
       <div>
         <Label
-          htmlFor="sleepHours"
+          htmlFor="sleep_hours"
           className="block mb-2 text-base font-medium"
         >
           Hours of Sleep Per Night
         </Label>
         <Input
-          id="sleepHours"
+          id="sleep_hours"
           type="number"
           min="1"
           max="24"
           step="1"
-          {...register("sleepHours", { valueAsNumber: true })}
+          {...register("sleep_hours", { valueAsNumber: true })}
         />
-        {errors.sleepHours && (
-          <p className="text-red-500">{errors.sleepHours.message}</p>
+        {errors.sleep_hours && (
+          <p className="text-red-500">{errors.sleep_hours.message}</p>
         )}
       </div>
 
