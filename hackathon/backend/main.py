@@ -16,7 +16,7 @@ app.add_middleware(
 @app.on_event("startup")
 def load_model():
     global model
-    model = pickle.load(open("estimator.pkl", "wb"))
+    model = pickle.load(open("estimator.pkl", "rb"))
 
 
 @router.get("/")
