@@ -67,7 +67,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ answers: data }),
       });
 
       if (!response.ok) {
@@ -75,6 +75,7 @@ export default function Home() {
       }
 
       const result = await response.json(); // assuming { result: number }
+      console.log("Prediction Result:", result);
       router.push(`/result/${result.result}`);
     } catch (error) {
       console.error("Submission error:", error);
