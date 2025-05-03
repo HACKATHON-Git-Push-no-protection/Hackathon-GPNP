@@ -119,7 +119,7 @@ export default function Home() {
           Height (cm)
         </Label>
         <Input
-          id="height_cm"
+          id="height"
           type="number"
           min="0"
           step="1"
@@ -136,7 +136,7 @@ export default function Home() {
           Weight (kg)
         </Label>
         <Input
-          id="weight_kg"
+          id="weight"
           type="number"
           min="0"
           step="0.1"
@@ -149,7 +149,7 @@ export default function Home() {
 
       {/* Hydration */}
       <RadioGroupField
-        name="hydration_level"
+        name="hydration"
         label="Hydration"
         options={[
           ["poor", "Poor (rarely drink water)"],
@@ -163,7 +163,7 @@ export default function Home() {
 
       {/* Physical Activity */}
       <RadioGroupField
-        name="activity_level"
+        name="activity"
         label="Activity Level"
         options={[
           ["low", "Low (mostly sedentary)"],
@@ -176,7 +176,7 @@ export default function Home() {
 
       {/* Medication */}
       <RadioGroupField
-        name="meds_affecting_gut"
+        name="medication"
         label="Medications"
         options={[
           ["yes", "Yes"],
@@ -188,7 +188,7 @@ export default function Home() {
 
       {/* Fiber Intake */}
       <RadioGroupField
-        name="fiber_grams"
+        name="fibers"
         label="Dietary Fiber"
         options={[
           ["not much", "Not much"],
@@ -201,7 +201,7 @@ export default function Home() {
 
       {/* Fat Intake */}
       <RadioGroupField
-        name="fat_grams"
+        name="fatIntake"
         label="Fat Intake"
         options={[
           ["not much", "Not much"],
@@ -215,7 +215,7 @@ export default function Home() {
 
       {/* Spice Level */}
       <RadioGroupField
-        name="spiciness"
+        name="spiceLevel"
         label="Spice Level"
         options={[
           ["not spicy", "Not spicy"],
@@ -229,7 +229,7 @@ export default function Home() {
 
       {/* Greasy Meals Per Week */}
       <RadioGroupField
-        name="weekly_greasy_meals"
+        name="greasyMealsPerWeek"
         label="Greasy/Fried Meals Per Week"
         options={[
           ["0-2", "0-2"],
@@ -243,7 +243,7 @@ export default function Home() {
 
       {/* Dairy Intake */}
       <RadioGroupField
-        name="dairy_freq"
+        name="dairyIntake"
         label="Dairy Consumption"
         options={[
           ["yes", "Yes"],
@@ -257,7 +257,7 @@ export default function Home() {
 
       {/* Processed Food Per Day */}
       <RadioGroupField
-        name="processed_servings"
+        name="processedFoodPerDay"
         label="Processed Food Servings Per Day"
         options={[
           ["0-2", "0-2"],
@@ -271,7 +271,7 @@ export default function Home() {
 
       {/* Fruits & Vegetables Per Day */}
       <RadioGroupField
-        name="fv_servings"
+        name="fruitsVeggiesPerDay"
         label="Fruits & Vegetables Servings Per Day"
         options={[
           ["0-2", "0-2"],
@@ -285,7 +285,7 @@ export default function Home() {
 
       {/* Wiping Method */}
       <RadioGroupField
-        name="toilet_method"
+        name="wipingMethod"
         label="Wiping Method"
         options={[
           ["1-ply paper", "1-ply paper"],
@@ -302,7 +302,7 @@ export default function Home() {
 
       {/* Stool Consistency */}
       <RadioGroupField
-        name="stool_consistency"
+        name="stoolConsistency"
         label="Stool Consistency"
         options={[
           ["hard and lumpy", "Hard and lumpy"],
@@ -318,7 +318,7 @@ export default function Home() {
 
       {/* Stool Color */}
       <RadioGroupField
-        name="stool_color"
+        name="stoolColor"
         label="Stool Color"
         options={[
           ["brown", "Brown"],
@@ -335,7 +335,7 @@ export default function Home() {
 
       {/* Stool Smell Intensity */}
       <RadioGroupField
-        name="smell_intensity"
+        name="stoolSmellIntensity"
         label="Stool Smell Intensity"
         options={[
           ["1", "1"],
@@ -358,7 +358,7 @@ export default function Home() {
           Bowel Movements Per Week
         </Label>
         <Input
-          id="weekly_bms"
+          id="bowelMovementsPerWeek"
           type="number"
           min="0"
           step="1"
@@ -371,7 +371,7 @@ export default function Home() {
 
       {/* Caffeine Per Day */}
       <RadioGroupField
-        name="caffeinated_beverages_per_day"
+        name="caffeinePerDay"
         label="Caffeinated Beverages Per Day"
         options={[
           ["0-2", "0-2"],
@@ -386,7 +386,7 @@ export default function Home() {
       {/* Sleep Hours */}
       <div>
         <Label
-          htmlFor="sleep_hours"
+          htmlFor="sleepHours"
           className="block mb-2 text-base font-medium"
         >
           Hours of Sleep Per Night
