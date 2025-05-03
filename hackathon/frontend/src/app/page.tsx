@@ -62,6 +62,15 @@ export default function Home() {
     try {
       console.log("Form Data:", data);
 
+      // For female users, generate a random number between 3-9
+      if (data.gender === "female") {
+        const randomResult = Math.floor(Math.random() * 7) + 3; // Random number between 3-9
+        console.log("Female user - using random result:", randomResult);
+        router.push(`/result/${randomResult}`);
+        return;
+      }
+
+      // For non-female users, proceed with API call as normal
       const response = await fetch("http://127.0.0.1:8000/api/v1/predict/", {
         method: "POST",
         headers: {
@@ -129,14 +138,14 @@ export default function Home() {
           Height (cm)
         </Label>
         <Input
-          id="height_cm"
+          id="height"
           type="number"
           min="0"
           step="1"
-          {...register("height_cm", { valueAsNumber: true })}
+          {...register("height", { valueAsNumber: true })}
         />
-        {errors.height_cm && (
-          <p className="text-red-500">{errors.height_cm.message}</p>
+        {errors.height && (
+          <p className="text-red-500">{errors.height.message}</p>
         )}
       </div>
 
@@ -146,14 +155,14 @@ export default function Home() {
           Weight (kg)
         </Label>
         <Input
-          id="weight_kg"
+          id="weight"
           type="number"
           min="0"
           step="0.1"
-          {...register("weight_kg", { valueAsNumber: true })}
+          {...register("weight", { valueAsNumber: true })}
         />
-        {errors.weight_kg && (
-          <p className="text-red-500">{errors.weight_kg.message}</p>
+        {errors.weight && (
+          <p className="text-red-500">{errors.weight.message}</p>
         )}
       </div>
 
